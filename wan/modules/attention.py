@@ -1,23 +1,28 @@
 # Copyright 2024-2025 The Alibaba Wan Team Authors. All rights reserved.
 import torch
 
-try:
-    import flash_attn_interface
+# Disabled flash_attn imports - using PyTorch native SDPA instead
+# If you want to re-enable flash_attn, uncomment the following block:
+# try:
+#     import flash_attn_interface
+#     def is_hopper_gpu():
+#         if not torch.cuda.is_available():
+#             return False
+#         device_name = torch.cuda.get_device_name(0).lower()
+#         return "h100" in device_name or "hopper" in device_name
+#     FLASH_ATTN_3_AVAILABLE = is_hopper_gpu()
+# except ModuleNotFoundError:
+#     FLASH_ATTN_3_AVAILABLE = False
+#
+# try:
+#     import flash_attn
+#     FLASH_ATTN_2_AVAILABLE = True
+# except ModuleNotFoundError:
+#     FLASH_ATTN_2_AVAILABLE = False
 
-    def is_hopper_gpu():
-        if not torch.cuda.is_available():
-            return False
-        device_name = torch.cuda.get_device_name(0).lower()
-        return "h100" in device_name or "hopper" in device_name
-    FLASH_ATTN_3_AVAILABLE = is_hopper_gpu()
-except ModuleNotFoundError:
-    FLASH_ATTN_3_AVAILABLE = False
-
-try:
-    import flash_attn
-    FLASH_ATTN_2_AVAILABLE = True
-except ModuleNotFoundError:
-    FLASH_ATTN_2_AVAILABLE = False
+# Force using PyTorch native scaled_dot_product_attention
+FLASH_ATTN_3_AVAILABLE = False
+FLASH_ATTN_2_AVAILABLE = False
 
 # FLASH_ATTN_3_AVAILABLE = False
 
